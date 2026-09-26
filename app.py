@@ -104,6 +104,7 @@ with st.sidebar:
     current_intake = st.number_input("✅ Protein already had today (grams)", min_value=0, value=0)
     remaining_target = max(protein_target - current_intake, 0)
     st.session_state['protein_target'] = protein_target
+    st.session_state['protein_already_manual'] = current_intake
     st.caption(f"Remaining protein needed today: **{remaining_target}g**")
 
     st.divider()

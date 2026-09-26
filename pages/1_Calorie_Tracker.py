@@ -80,6 +80,10 @@ food_log = st.text_area(
     "What did you eat today? (describe freely, e.g. '2 eggs, a bowl of dal, one roti')",
     ""
 )
+overlap_choice = st.radio(
+    "Does this food log include the protein you already logged on the Protein & Budget page?",
+    ["I didn't log anything there", "Yes, this includes that food", "No, this is additional food on top of that"]
+)
 
 SYSTEM_PROMPT = """You are a careful, honest nutrition estimator.
 
@@ -128,8 +132,15 @@ if st.button("Analyze My Day"):
     else:
         with st.spinner("Analyzing..."):
             result = get_calorie_analysis(food_log)
+            manual_protein = st.session_state.get('protein_already_manual', 0)
+
+            if overlap_choice == "No, this is additional food on top of that":
+             total_protein_today = result['total_protein_grams'] + manual_protein
+            else:
+             total_protein_today = result['total_protein_grams']
+
             st.session_state['calories_consumed'] = result['total_calories']
-            st.session_state['protein_consumed'] = result['total_protein_grams']
+            st.session_state['protein_consumed'] = total_protein_today
             st.session_state['calorie_target'] = calorie_target
 
     
