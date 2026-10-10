@@ -1,6 +1,9 @@
 import streamlit as st
+from common import require_login
 
 st.set_page_config(page_title="Protein Budget Advisor", page_icon="🍳", layout="centered")
+
+require_login()
 
 st.markdown("""
 <style>
